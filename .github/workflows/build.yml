@@ -28,8 +28,7 @@ jobs:
         run: pip install flet
 
       - name: Build APK
-        # Proses ini akan mendownload Flutter SDK secara otomatis dan memakan waktu sekitar 3-5 menit
-        run: flet build apk
+        run: yes | flet build apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
