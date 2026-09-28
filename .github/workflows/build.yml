@@ -1,0 +1,38 @@
+name: Build Flet APK
+
+on:
+  push:
+    branches: [ "main" ] # Berjalan otomatis saat ada push ke branch main
+  workflow_dispatch:     # Memungkinkan build dijalankan secara manual dari tab Actions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Setup Java JDK (Dibutuhkan untuk build Android)
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Install Flet
+        run: pip install flet
+
+      - name: Build APK
+        # Proses ini akan mendownload Flutter SDK secara otomatis dan memakan waktu sekitar 3-5 menit
+        run: flet build apk
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PrintScreenshot-APK
+          path: build/apk/**/*.apk
